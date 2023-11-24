@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_streaming_app/screens/login_screen.dart';
 import 'package:flutter_streaming_app/screens/signup_screen.dart';
-// import 'package:flutter_streaming_app/utils/imgs.dart';
 import 'package:flutter_streaming_app/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,21 +11,27 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'RubberDuck',
-          style: GoogleFonts.sora(
-            textStyle: const TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ),
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Positioned(
-            left: 120,
+            left: 15,
+            top: 10,
+            child: SafeArea(
+              child: Text(
+                'RubberDuck',
+                style: GoogleFonts.sora(
+                  textStyle: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: -20,
+            top: 110,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(80),
               child: SizedBox.fromSize(
