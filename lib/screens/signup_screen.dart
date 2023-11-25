@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_streaming_app/screens/home_screen.dart';
 import 'package:flutter_streaming_app/screens/login_screen.dart';
+import 'package:flutter_streaming_app/services/auth/auth_methods.dart';
 import 'package:flutter_streaming_app/utils/colors.dart';
 import 'package:flutter_streaming_app/widgets/custom_button.dart';
 import 'package:flutter_streaming_app/widgets/custom_textfield.dart';
@@ -17,6 +19,20 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final AuthMethods _authMethods = AuthMethods();
+
+  void signUpUser() async{
+    bool res = await _authMethods.signUpUser(
+      context,
+      _emailController.text,
+      _usernameController.text,
+      _passwordController.text,
+    );
+    if(res){
+      Navigator.pushNamed(context, HomeScreen.routeName);
+    }
+  }
 
   bool? isChecked = false;
   @override
@@ -69,16 +85,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   //Password Text field
                   MyTextField(
-                    hintText: 'Enter your password',
-                    obscureText: true,
-                    controller: _passwordController,
+                    hintText: 'Enter your username',
+                    obscureText: false,
+                    controller: _usernameController,
                   ),
                   const SizedBox(
                     height: 25,
                   ),
                   //Password Text field
                   MyTextField(
-                    hintText: 'Confirm your password',
+                    hintText: 'Enter your password',
                     obscureText: true,
                     controller: _passwordController,
                   ),
@@ -119,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 25.0, bottom: 10.0),
-                    child: CustomButton(onTap: () {}, text: "Log in"),
+                    child: CustomButton(onTap: signUpUser, text: "Sign up"),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
