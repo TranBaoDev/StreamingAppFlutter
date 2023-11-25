@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomOtherButton(
                     onTap: () {},
                     text: 'Login with Facebook',
-                    imagePath: 'assets/img/google-icon.png',
+                    imagePath: 'assets/icons/google-icon.png',
                     backgroundColor: Colors.white,
                     textColor: Colors.black,
                   ),
@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomOtherButton(
                     onTap: () {},
-                    imagePath: 'assets/img/apple-icon.png',
+                    imagePath: 'assets/icons/apple-icon.png',
                     text: 'Login with Facebook',
                     backgroundColor: Colors.black,
                     textColor: Colors.white,

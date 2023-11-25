@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/FlutterDev/flutter_streaming_app/windows/runner"
+    "cmake.sourceDirectory": "D:/FlutterDev/flutter_streaming_app/windows/runner",
+    "java.configuration.updateBuildConfiguration": "automatic"
 }
