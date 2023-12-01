@@ -29,6 +29,13 @@
             {
               "client_id": "425383502292-vfdnm196p1834af012br2e2jcb775br3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "425383502292-9vqpdsio1ddf9nbau14v0dohesu503qg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterStreamingApp"
+              }
             }
           ]
         }

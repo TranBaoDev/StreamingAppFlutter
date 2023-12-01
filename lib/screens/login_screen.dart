@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_streaming_app/screens/home_screen.dart';
 import 'package:flutter_streaming_app/screens/signup_screen.dart';
+import 'package:flutter_streaming_app/services/auth/auth_methods.dart';
 import 'package:flutter_streaming_app/utils/colors.dart';
 import 'package:flutter_streaming_app/widgets/custom_button.dart';
 import 'package:flutter_streaming_app/widgets/custom_textfield.dart';
@@ -17,6 +19,18 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthMethods _authMethods = AuthMethods();
+
+   logInUser() async {
+    bool res = await _authMethods.logInUser(
+      context,
+      _emailController.text,
+      _passwordController.text,
+    );
+    if(res){
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+    }
+  }
 
   bool? isChecked = false;
   @override
@@ -92,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       )),
                   Padding(
                     padding: const EdgeInsets.only(top: 25.0, bottom: 10.0),
-                    child: CustomButton(onTap: () {}, text: "Log in"),
+                    child: CustomButton(onTap: logInUser, text: "Log in"),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

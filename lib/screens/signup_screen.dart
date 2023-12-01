@@ -22,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final AuthMethods _authMethods = AuthMethods();
 
-  void signUpUser() async{
+  void signUpUser() async {
     bool res = await _authMethods.signUpUser(
       context,
       _emailController.text,
@@ -30,7 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _passwordController.text,
     );
     if(res){
-      Navigator.pushNamed(context, HomeScreen.routeName);
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     }
   }
 
@@ -40,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: BackButton(
+        leading: const BackButton(
           color: Colors.black,
         ),
         title: const Text(''),
