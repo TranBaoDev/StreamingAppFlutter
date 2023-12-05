@@ -43,6 +43,11 @@ dependencies:
   cloud_firestore: ^4.13.2
   agora_rtm: ^1.5.9
   provider: ^6.1.1
+  material_symbols_icons: ^4.2711.0
+  flutter_svg: ^2.0.9
+  dotted_border: ^2.1.0
+  gap: ^3.0.1
+  file_picker: ^6.1.1
   
 
 dev_dependencies:
@@ -71,7 +76,7 @@ flutter:
   assets:
       - assets/img/
       - assets/icons/
-  #   - assets/images/a_dot_ham.jpeg
+      - assets/vectors/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

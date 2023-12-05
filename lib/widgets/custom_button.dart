@@ -4,15 +4,24 @@ import 'package:google_fonts/google_fonts.dart';
 
 //CustomLoginBtn
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.onTap, required this.text});
+const CustomButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    required this.backgroundColor,
+    required this.textColor,
+  });
+
   final String text;
   final VoidCallback onTap;
+  final Color backgroundColor;
+  final Color textColor;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 85, vertical: 19),
-        backgroundColor: buttonColor,
+        backgroundColor: backgroundColor,
         minimumSize: const Size(352, 40),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
@@ -22,10 +31,10 @@ class CustomButton extends StatelessWidget {
       child: Text(
         text,
         style: GoogleFonts.poppins(
-          textStyle: const TextStyle(
+          textStyle: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
-            color: textInBtnColor,
+            color: textColor,
           ),
         ),
       ),

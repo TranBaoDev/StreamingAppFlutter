@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_streaming_app/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyTextField extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final bool obscureText;
-  const MyTextField({
+  const CustomTextField({
     super.key,
     required this.controller,
     required this.hintText,
@@ -22,19 +22,20 @@ class MyTextField extends StatelessWidget {
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: buttonColor,
-            width: 2,
+            color: backgroundContain,
+            width: 3,
           ),
-          borderRadius: BorderRadius.circular(13.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: backgroundColor,
+            color: outlineColor,
+            width: 3,
           ),
-          borderRadius: BorderRadius.circular(13.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         filled: true,
-        contentPadding: const EdgeInsets.all(20),
+        contentPadding: const EdgeInsets.all(15),
         hintText: hintText,
         hintStyle: GoogleFonts.sora(
           color: secondTextColor,

@@ -6,6 +6,7 @@ import 'package:flutter_streaming_app/services/auth/auth_methods.dart';
 import 'package:flutter_streaming_app/utils/colors.dart';
 import 'package:flutter_streaming_app/widgets/custom_button.dart';
 import 'package:flutter_streaming_app/widgets/custom_textfield.dart';
+import 'package:flutter_streaming_app/widgets/loading_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -22,16 +23,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final AuthMethods _authMethods = AuthMethods();
 
+  bool _isLoading = false;
+
   void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
     bool res = await _authMethods.signUpUser(
       context,
       _emailController.text,
       _usernameController.text,
       _passwordController.text,
     );
-    if(res){
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res) {
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
+    super.dispose();
   }
 
   bool? isChecked = false;
@@ -46,137 +64,146 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: const Text(''),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    child: Text(
-                      'Create account',
-                      style: GoogleFonts.sora(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "Let's start tour live now!",
-                    style: GoogleFonts.sora(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w300,
-                      color: secondTextColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  MyTextField(
-                    hintText: 'example@gmail',
-                    obscureText: false,
-                    controller: _emailController,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  //Password Text field
-                  MyTextField(
-                    hintText: 'Enter your username',
-                    obscureText: false,
-                    controller: _usernameController,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  //Password Text field
-                  MyTextField(
-                    hintText: 'Enter your password',
-                    obscureText: true,
-                    controller: _passwordController,
-                  ),
-                  Row(
-                    textDirection: TextDirection.ltr,
-                    children: [
-                      Checkbox(
-                        value: isChecked,
-                        onChanged: (value) {
-                          setState(() {
-                            isChecked = value;
-                          });
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2.5),
+      body: _isLoading
+          ? const LoadingIndicator()
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: Text(
+                            'Create account',
+                            style: GoogleFonts.sora(
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                        activeColor: Colors.white70,
-                        checkColor: Colors.black,
-                        side: MaterialStateBorderSide.resolveWith(
-                            (states) => BorderSide(
-                                  width: 1.0,
-                                  color: Colors.black,
-                                )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isChecked = isChecked != null ? !isChecked! : true;
-                          });
-                        },
-                        child: Text(
-                          'I agree to the terms and conditions',
-                          style: GoogleFonts.rubik(
-                              fontSize: 16, fontWeight: FontWeight.w400),
-                        ),
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25.0, bottom: 10.0),
-                    child: CustomButton(onTap: signUpUser, text: "Sign up"),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "Already have an account? ",
-                          style: GoogleFonts.rubik(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
+                        Text(
+                          "Let's start tour live now!",
+                          style: GoogleFonts.sora(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w300,
                             color: secondTextColor,
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'Log in',
-                              style: const TextStyle(
-                                color: primaryTextColor,
-                                fontWeight: FontWeight.w600,
-                                decoration: TextDecoration.underline,
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        CustomTextField(
+                          hintText: 'example@gmail',
+                          obscureText: false,
+                          controller: _emailController,
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        //Password Text field
+                        CustomTextField(
+                          hintText: 'Enter your username',
+                          obscureText: false,
+                          controller: _usernameController,
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        //Password Text field
+                        CustomTextField(
+                          hintText: 'Enter your password',
+                          obscureText: true,
+                          controller: _passwordController,
+                        ),
+                        Row(
+                          textDirection: TextDirection.ltr,
+                          children: [
+                            Checkbox(
+                              value: isChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  isChecked = value;
+                                });
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.5),
                               ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  // Handle the "Sign Up" action here
-                                  Navigator.of(context)
-                                      .pushNamed(LoginScreen.routeName);
-                                },
+                              activeColor: Colors.white70,
+                              checkColor: Colors.black,
+                              side: MaterialStateBorderSide.resolveWith(
+                                  (states) => BorderSide(
+                                        width: 1.0,
+                                        color: Colors.black,
+                                      )),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isChecked =
+                                      isChecked != null ? !isChecked! : true;
+                                });
+                              },
+                              child: Text(
+                                'I agree to the terms and conditions',
+                                style: GoogleFonts.rubik(
+                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(top: 25.0, bottom: 10.0),
+                          child: CustomButton(
+                            onTap: signUpUser,
+                            text: "Sign up",
+                            backgroundColor: buttonColor,
+                            textColor: textBtnColor,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                text: "Already have an account? ",
+                                style: GoogleFonts.rubik(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: secondTextColor,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Log in',
+                                    style: const TextStyle(
+                                      color: primaryTextColor,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        // Handle the "Sign Up" action here
+                                        Navigator.of(context)
+                                            .pushNamed(LoginScreen.routeName);
+                                      },
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

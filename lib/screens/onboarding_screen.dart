@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_streaming_app/screens/login_screen.dart';
 import 'package:flutter_streaming_app/screens/signup_screen.dart';
+import 'package:flutter_streaming_app/utils/colors.dart';
 import 'package:flutter_streaming_app/widgets/custom_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -88,6 +89,8 @@ class OnBoardingScreen extends StatelessWidget {
                       Navigator.pushNamed(context, LoginScreen.routeName);
                     },
                     text: "Log in",
+                    backgroundColor: buttonColor,
+                    textColor: textBtnColor,
                   ),
                 ),
                 const SizedBox(
@@ -98,6 +101,8 @@ class OnBoardingScreen extends StatelessWidget {
                     Navigator.pushNamed(context, SignUpScreen.routeName);
                   },
                   text: "Sign up",
+                  backgroundColor: buttonColor,
+                  textColor: textBtnColor,
                 ),
               ],
             ),
