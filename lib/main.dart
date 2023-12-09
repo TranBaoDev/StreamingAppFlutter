@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Streaming App',
       theme: ThemeData.light().copyWith(
-        scaffoldBackgroundColor: backgroundColor,
+        scaffoldBackgroundColor: primaryTextColor,
         appBarTheme: AppBarTheme.of(context).copyWith(
           backgroundColor: backgroundColor,
           elevation: 0,

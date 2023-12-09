@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: const BackButton(
@@ -127,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: CustomButton(
                             onTap: logInUser,
                             text: "Log in",
-                            backgroundColor: backgroundColor,
+                            backgroundColor: buttonColor,
                             textColor: textBtnColor,
                           ),
                         ),

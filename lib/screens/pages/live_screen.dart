@@ -35,7 +35,10 @@ class _LiveScreenState extends State<LiveScreen> {
       showSnackBar(context, 'Livestream has started successfully!');
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => BroadCastScreen(),
+          builder: (context) => BroadCastScreen(
+            channelId: channelId,
+            isBroadCaster: true,
+          ),
         ),
       );
     }
@@ -46,109 +49,106 @@ class _LiveScreenState extends State<LiveScreen> {
     return Scaffold(
       backgroundColor: backgroundIndex,
       body: SafeArea(
-        child: GestureDetector(
-          onTap: (){
-            FocusScope.of(context).unfocus();
-          },
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 15.0),
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          Uint8List? pickedImage = await pickImage();
-                          if (pickedImage != null) {
-                            setState(() {
-                              image = pickedImage;
-                            });
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                            vertical: 20.0,
-                          ),
-                          child: image != null
-                              ? SizedBox(
-                                  height: 300,
-                                  child: Image.memory(image!),
-                                )
-                              : DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(10),
-                                  dashPattern: const [10, 4],
-                                  strokeCap: StrokeCap.round,
-                                  color: borderColor,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      color: backgroundContain.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.folder_open,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 22.0, vertical: 15.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        Uint8List? pickedImage = await pickImage();
+                        if (pickedImage != null) {
+                          setState(() {
+                            image = pickedImage;
+                          });
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 20.0,
+                        ),
+                        child: image != null
+                            ? SizedBox(
+                                height: 300,
+                                child: Image.memory(image!),
+                              )
+                            : DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(10),
+                                dashPattern: const [10, 4],
+                                strokeCap: StrokeCap.round,
+                                color: borderColor,
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    color: backgroundContain.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.folder_open,
+                                        color: outlineColor,
+                                        size: 37,
+                                      ),
+                                      const Gap(10),
+                                      Text(
+                                        'Select your thumbnail',
+                                        style: GoogleFonts.sora(
+                                          fontSize: 15,
                                           color: outlineColor,
-                                          size: 37,
+                                          fontWeight: FontWeight.w400,
                                         ),
-                                        const Gap(10),
-                                        Text(
-                                          'Select your thumbnail',
-                                          style: GoogleFonts.sora(
-                                            fontSize: 15,
-                                            color: outlineColor,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
                                 ),
-                        ),
+                              ),
                       ),
-                      const Gap(10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Title',
-                            style: GoogleFonts.sora(
-                              fontWeight: FontWeight.bold,
-                              color: outlineColor,
-                            ),
+                    ),
+                    const Gap(10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Title',
+                          style: GoogleFonts.sora(
+                            fontWeight: FontWeight.bold,
+                            color: outlineColor,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: CustomTextField(
-                              controller: _titleController,
-                              hintText: '',
-                              obscureText: false,
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: CustomTextField(
+                            controller: _titleController,
+                            hintText: '',
+                            obscureText: false,
                           ),
-                        ],
-                      )
-                    ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const Gap(20),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 10,
                   ),
-                  const Gap(140),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 10,
-                    ),
-                    child: CustomButton(
-                      onTap: goLiveStream,
-                      text: 'Go Live!',
-                      textColor: buttonColor,
-                      backgroundColor: filledColor,
-                    ),
-                  )
-                ],
-              ),
+                  child: CustomButton(
+                    onTap: goLiveStream,
+                    text: 'Go Live!',
+                    textColor: buttonColor,
+                    backgroundColor: filledColor,
+                  ),
+                )
+              ],
             ),
           ),
         ),

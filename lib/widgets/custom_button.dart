@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_streaming_app/utils/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 //CustomLoginBtn
@@ -22,7 +21,7 @@ const CustomButton({
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 85, vertical: 19),
         backgroundColor: backgroundColor,
-        minimumSize: const Size(352, 40),
+        minimumSize: const Size(double.infinity, 40),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
