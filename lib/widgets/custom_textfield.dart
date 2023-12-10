@@ -46,3 +46,45 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
+
+class ChatTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final Function(String)? onTap;
+  const ChatTextField({
+    super.key,
+    required this.controller,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onSubmitted: onTap,
+      cursorHeight: 20,
+      controller: controller,
+      decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: backgroundContain,
+            width: 3,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: outlineColor,
+            width: 3,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        filled: true,
+        contentPadding: const EdgeInsets.all(15),
+        hintStyle: GoogleFonts.sora(
+          color: secondTextColor,
+          fontSize: 18,
+        ),
+        fillColor: fillTextColor,
+      ),
+    );
+  }
+}

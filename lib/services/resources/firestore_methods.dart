@@ -7,6 +7,7 @@ import 'package:flutter_streaming_app/services/models/livestream.dart';
 import 'package:flutter_streaming_app/services/resources/storage_methods.dart';
 import 'package:flutter_streaming_app/utils/utils.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -78,6 +79,27 @@ class FirestoreMethods {
       await _firestore.collection('livestream').doc(channelId).delete();
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  Future<void> chatRLT(String text, String id, BuildContext context) async {
+    final user = Provider.of<UserProvider>(context, listen: false);
+    try {
+      String commentId = const Uuid().v1();
+      await _firestore
+          .collection('livestream')
+          .doc(id)
+          .collection('comments')
+          .doc(commentId)
+          .set({
+        'username': user.user.username,
+        'message': text,
+        'uid': user.user.uid,
+        'createAt': DateTime.now(),
+        'commentId': commentId,
+      });
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
     }
   }
 

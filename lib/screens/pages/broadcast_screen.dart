@@ -6,6 +6,7 @@ import 'package:flutter_streaming_app/screens/home_screen.dart';
 import 'package:flutter_streaming_app/services/auth/auth_provider.dart';
 import 'package:flutter_streaming_app/services/models/user.dart';
 import 'package:flutter_streaming_app/services/resources/firestore_methods.dart';
+import 'package:flutter_streaming_app/widgets/chat.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -27,8 +28,8 @@ class BroadCastScreen extends StatefulWidget {
 
 class _BroadCastScreenState extends State<BroadCastScreen> {
   late final RtcEngine _engine;
-
-  bool isJoined = false, switchCamera = true, switchRender = true;
+  bool switchCamera = true;
+  bool isMuted = false;
   List<int> remoteUid = [];
 
   @override
@@ -98,6 +99,21 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
     }
   }
 
+  void _switchCamera() {
+    _engine.switchCamera().then((value) {
+      switchCamera = !switchCamera;
+    }).catchError((err) {
+      debugPrint('switchCamera $err');
+    });
+  }
+
+  void onToggleMute() async {
+    setState(() {
+      isMuted = !isMuted;
+    });
+    await _engine.muteLocalAudioStream(isMuted);
+  }
+
   _leaveChannel() async {
     if ('${Provider.of<UserProvider>(context, listen: false).user.uid}${Provider.of<UserProvider>(context, listen: false).user.username}' ==
         widget.channelId) {
@@ -129,8 +145,8 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
-    return PopScope(
-      onPopInvoked: (didPop) async {
+    return WillPopScope(
+      onWillPop: () async {
         await _leaveChannel();
         return Future.value(true);
       },
@@ -140,6 +156,26 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
           child: Column(
             children: [
               _renderVideo(user),
+              if ("${user.uid}${user.username}" == widget.channelId)
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: _switchCamera,
+                      child: const Text('Switch Camera'),
+                    ),
+                    InkWell(
+                      onTap: onToggleMute,
+                      child: Text(isMuted ? 'Unmute' : 'Mute'),
+                    ),
+                  ],
+                ),
+              Expanded(
+                child: Chat(
+                  channelId: widget.channelId,
+                ),
+              ),
             ],
           ),
         ),
