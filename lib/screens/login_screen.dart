@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
         leading: const BackButton(
           color: Colors.black,
         ),
-        title: Text(''),
+        title: const Text(''),
         centerTitle: true,
       ),
       body: _isLoading
@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                                 child: Divider(
                               color: Colors.black,
                             )),
@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: secondTextColor),
                               ),
                             ),
-                            Expanded(
+                            const Expanded(
                                 child: Divider(
                               color: Colors.black,
                             )),

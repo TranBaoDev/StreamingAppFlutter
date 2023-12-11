@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 
 class Chat extends StatefulWidget {
   final String channelId;
-
   const Chat({
     Key? key,
     required this.channelId,
@@ -38,39 +37,32 @@ class _ChatState extends State<Chat> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
+            child: StreamBuilder<dynamic>(
               stream: FirebaseFirestore.instance
                   .collection('livestream')
                   .doc(widget.channelId)
                   .collection('comments')
                   .orderBy('createdAt', descending: true)
                   .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return LoadingIndicator(); // Use your loading widget
+                  return const LoadingIndicator();
                 }
 
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                }
-
-                return ListView.separated(
-                  reverse: true, // Display the newest messages at the bottom
-                  itemCount: snapshot.data!.docs.length,
-                  separatorBuilder: (context, index) =>
-                      Divider(), // Add a divider between items
+                return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) => ListTile(
                     title: Text(
-                      snapshot.data!.docs[index]['username'],
+                      snapshot.data.docs[index]['username'],
                       style: TextStyle(
-                        color: snapshot.data!.docs[index]['uid'] ==
+                        color: snapshot.data.docs[index]['uid'] ==
                                 userProvider.user.uid
                             ? Colors.blue
                             : Colors.black,
                       ),
                     ),
                     subtitle: Text(
-                      snapshot.data!.docs[index]['message'],
+                      snapshot.data.docs[index]['message'],
                     ),
                   ),
                 );
@@ -89,7 +81,7 @@ class _ChatState extends State<Chat> {
                 _chatController.text = "";
               });
             },
-          ),
+          )
         ],
       ),
     );

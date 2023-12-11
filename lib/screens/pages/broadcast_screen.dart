@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:http/http.dart' as http;
 
 class BroadCastScreen extends StatefulWidget {
   final bool isBroadCaster;
@@ -53,6 +56,28 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
     _joinChannel();
   }
 
+  String baseURl = "https://twitch-clone-server-2c96a095d079.herokuapp.com/";
+  String? token;
+
+  Future<void> getToken() async {
+    final res = await http.get(
+      Uri.parse(
+          '$baseURl/rtc/${widget.channelId}/publisher/userAccount/${Provider.of<UserProvider>(context, listen: false).user.uid}/'),
+    );
+
+    if (res.statusCode == 200) {
+      setState(() {
+        token = res.body;
+        token = jsonDecode(token!)['rtcToken'];
+      });
+
+    }else{
+      debugPrint('Failed to fetch the token');
+    }
+
+
+  }
+
   void _addListeners() {
     _engine.setEventHandler(
       RtcEngineEventHandler(
@@ -77,27 +102,25 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
             remoteUid.clear();
           });
         },
-        // tokenPrivilegeWillExpire: (token) async {
-        //   await getToken();
-        //   await _engine.renewToken(token);
-        // },
+        tokenPrivilegeWillExpire: (token) async {
+          await getToken();
+          await _engine.renewToken(token);
+        },
       ),
     );
   }
 
   void _joinChannel() async {
-    // await getToken();
-    if (tempToken != null) {
-      if (defaultTargetPlatform == TargetPlatform.android) {
-        await [Permission.microphone, Permission.camera].request();
-      }
-      await _engine.joinChannelWithUserAccount(
-        tempToken,
-        'thirdTest',
-        Provider.of<UserProvider>(context, listen: false).user.uid,
-      );
+    await getToken();
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await [Permission.microphone, Permission.camera].request();
     }
-  }
+    await _engine.joinChannelWithUserAccount(
+      token,
+      'thirdTest',
+      Provider.of<UserProvider>(context, listen: false).user.uid,
+    );
+    }
 
   void _switchCamera() {
     _engine.switchCamera().then((value) {
@@ -171,6 +194,7 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
                     ),
                   ],
                 ),
+              // TODO: Fix the chat it doesn't display on BroadCastScreen
               Expanded(
                 child: Chat(
                   channelId: widget.channelId,

@@ -23,9 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List<Widget> _screens = [
-    NewfeedScreen(),
-    LiveScreen(),
-    ProfileScreen()
+    const NewfeedScreen(),
+    const LiveScreen(),
+    const ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
